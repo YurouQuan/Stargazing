@@ -14,6 +14,27 @@ The function fetches hourly cloud cover from Open-Meteo, looks up modeled backgr
 | `best_window` | Start and end in UTC, suitability score from 0–100, and a summary of cloud cover, Sun altitude, Moon altitude, and lunar illumination for that window. `null` if no window can be scored. |
 | `warnings` | Missing data or provider issues the UI should explain |
 
+##### output example:
+```json
+{
+  "status": "scored",
+  "sky_background": {
+    "sqm": 20.8,
+    "bortle_class": 4
+  },
+  "best_window": {
+    "start_utc": "2026-11-21T03:00:00Z",
+    "end_utc": "2026-11-21T04:00:00Z",
+    "score": 84.2,
+    "mean_cloud_cover_pct": 12,
+    "sun_altitude_midpoint_deg": -28,
+    "moon_altitude_midpoint_deg": -5,
+    "lunar_illumination_midpoint_pct": 67
+  },
+  "warnings": []
+}
+```
+
 DarkSkySites provides **estimated Bortle class (1–9)**. The **0–100 suitability score** is our own calculation for the observing window. [DarkSkySites API documentation](https://darkskysites.com/api-access)
 
 ### How the two features use it
