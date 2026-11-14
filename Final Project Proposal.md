@@ -1,3 +1,4 @@
+# Final Project Proposal
 ### Introduction
 
 In this final project, we would like to build up a web application for helping people decide when and where to go stargazing. Users simply enter a street address or city name with the date and time range they would like to observe the universe. Our application would firstly assess user's selected location, then lists several official observatories within a 50km radius, sorted by priority. 
@@ -30,7 +31,7 @@ sequenceDiagram
     B->>G: POST /stargazing/plan <br>with a JSON request body
     G->>L: Invoke Lambda with the <br>request body in event.body
     L->>L: Parse JSON and validate inputs
-    L->>A: Look up the Evanston <br>street address
+    L->>A: Look up the <br>street address
     A-->>L: Return the matched <br>address and coordinates
 
     rect rgba(70, 130, 180, 0.12)
