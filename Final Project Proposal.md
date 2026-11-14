@@ -8,7 +8,6 @@ Our serverless web service will use Amazon API Gateway to receive requests, and 
 2. search for the continuous time period within the user-specified timeframe that best matches the user's desired duration. Exclude windows with insufficient light, rate the remaining window based on cloud coverage, moonlight, and background sky brightness, and return the window with the highest rating. If no windows could be rated, return a message with explanation.
 3. filter the observation sites in the directory based on distance, evaluating the forecast conditions at these sites during the qualifying time period, and rank those sites that offer better conditions than user's selected location.
 
-<div class="page-break" style="page-break-before: always;"></div>
 
 #### Sequence Diagram
 Here is a brief walkthrough of our project:
