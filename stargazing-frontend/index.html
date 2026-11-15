@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0e0f22" />
+  <meta name="description" content="Find darker skies and better stargazing windows near you." />
+  <title>Stargazing Planner</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="Stargazing Planner home"><span class="brand-mark">✦</span><span>STARGAZING<span class="brand-light"> PLANNER</span></span></a>
+    <nav class="header-nav"></nav>
+  </header>
+
+  <main>
+    <!-- PAGE 1 -->
+    <section class="page page-home active" id="page-home" aria-labelledby="home-title">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="eyebrow-line"></span> YOUR NIGHT, REIMAGINED</div>
+        <h1 id="home-title">Find your<br><em>place in the</em><br>universe.</h1>
+        <p class="hero-description">A clearer sky changes everything. Discover nearby places with darker skies and find a moment when the universe feels a little closer.</p>
+      </div>
+
+      <div class="search-column">
+        <div class="panel-kicker">PLAN YOUR NIGHT</div>
+        <div class="search-card">
+          <div class="card-heading"><div><div class="step-label">01 / DISCOVER</div><h2>Where will the night take you?</h2></div><span class="card-icon">✧</span></div>
+          <p class="card-intro">Choose a place and a time. We’ll help you find the best conditions for stargazing.</p>
+          <form id="search-form" novalidate>
+            <div class="field-group">
+              <label for="location-input">LOCATION</label>
+              <div class="location-wrap"><span class="input-icon">⌖</span><input id="location-input" name="location" autocomplete="off" value="Evanston, Illinois" placeholder="Search a city or place" required aria-autocomplete="list" aria-expanded="false" aria-controls="location-suggestions"><span class="input-trailing">⌕</span><div id="location-suggestions" class="suggestions" role="listbox"></div></div>
+              <div class="field-hint" id="location-hint">Search for a U.S. city or address.</div>
+            </div>
+            <div class="field-grid">
+              <div class="field-group"><label for="date-input">DATE</label><input type="date" id="date-input" required></div>
+              <div class="field-group"><label for="duration-input">WINDOW LENGTH</label><div class="select-wrap"><select id="duration-input"><option value="60" selected>60 minutes</option></select></div></div>
+              <div class="field-group"><label for="start-input">START TIME</label><input type="time" id="start-input" value="20:00" required></div>
+              <div class="field-group"><label for="end-input">END TIME</label><input type="time" id="end-input" value="23:00" required></div>
+            </div>
+            <p class="form-error" id="form-error" role="alert"></p>
+            <button class="primary-button" type="submit"><span>Find stargazing conditions</span><span class="button-arrow">↗</span></button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 2 -->
+    <section class="page page-explore" id="page-explore" aria-labelledby="explore-title" hidden>
+      <aside class="criteria-column explore-search-column">
+        <div class="eyebrow"><span class="eyebrow-line"></span> REFINE YOUR SEARCH</div>
+        <div class="search-card explore-search-card">
+          <div class="card-heading"><div><div class="step-label">02 / EXPLORE</div><h2>Adjust your night.</h2></div><span class="card-icon">✧</span></div>
+          <div class="field-group">
+            <label for="explore-location-input">LOCATION</label>
+            <div class="location-wrap"><span class="input-icon">⌖</span><input id="explore-location-input" autocomplete="off" value="Evanston, Illinois" placeholder="Search a city or place" aria-autocomplete="list" aria-expanded="false" aria-controls="explore-location-suggestions"><span class="input-trailing">⌕</span><div id="explore-location-suggestions" class="suggestions" role="listbox"></div></div>
+            <div class="field-hint" id="explore-location-hint">Search for a U.S. city or address.</div>
+          </div>
+          <div class="field-grid">
+            <div class="field-group"><label for="explore-date-input">DATE</label><input type="date" id="explore-date-input"></div>
+            <div class="field-group"><label for="explore-duration-input">WINDOW LENGTH</label><div class="select-wrap"><select id="explore-duration-input"><option value="60">60 minutes</option></select></div></div>
+            <div class="field-group"><label for="explore-start-input">START TIME</label><input type="time" id="explore-start-input"></div>
+            <div class="field-group"><label for="explore-end-input">END TIME</label><input type="time" id="explore-end-input"></div>
+          </div>
+          <p class="form-error" id="explore-form-error" role="alert"></p>
+          <button class="primary-button" id="update-search-button" type="button"><span>Update search</span><span class="button-arrow">↗</span></button>
+        </div>
+        <div class="main-location-card">
+          <div class="card-topline"><span>YOUR MAIN LOCATION</span><span class="legend-radius">SEARCH CENTER</span></div>
+          <a class="main-location-link" href="#detail" id="main-location-link"><span class="pin-symbol">⌖</span><span><strong id="main-location-name">Evanston, Illinois</strong><small id="main-location-coords">42.04114, -87.69006</small><small class="main-location-score" id="main-location-score">Score: —</small><em>View main location details →</em></span></a>
+        </div>
+      </aside>
+      <div class="map-column">
+        <div class="map-heading"><div><div class="step-label">02 / EXPLORE</div><h2>Nearby under the stars</h2><p id="map-subtitle">Places within 50 km of your selected location</p></div><div class="map-count"><strong id="site-count">03</strong><span>RETURNED ALTERNATIVES</span></div></div>
+        <div class="map-frame"><div id="explore-map" class="map-canvas" aria-label="Map showing nearby candidate observing locations"></div><div class="map-overlay-label"><span class="overlay-pulse"></span> 50 KM SEARCH AREA</div></div>
+        <div class="site-strip"><div><span class="strip-label">NEARBY LOCATIONS</span></div><div class="site-chips" id="site-chips"></div></div>
+      </div>
+    </section>
+
+    <!-- PAGE 3 -->
+    <section class="page page-detail" id="page-detail" aria-labelledby="detail-title" hidden>
+      <aside class="detail-column">
+        <div class="eyebrow"><span class="eyebrow-line"></span> LOCATION INSIGHT</div>
+        <div class="detail-back-row"><button class="back-button" id="back-to-map">← Back to map</button></div>
+        <h1 class="page-title detail-title" id="detail-title">Skokie Lagoons</h1>
+        <p class="detail-address" id="detail-address">Address is being resolved from the location coordinates…</p>
+        <div class="score-banner"><div><span class="score-label">STARGAZING SCORE</span><div class="score-value"><strong id="detail-score">—</strong><span id="detail-score-suffix">/ 100</span></div></div><div class="score-grade"><span class="grade-stars">✦ ✦ ✦</span><strong id="detail-status">Scored assessment</strong></div></div>
+        <section class="metric-section"><div class="section-heading"><span>01</span><h2>Sky background</h2><i></i></div><div class="metric-grid"><div class="metric-card"><span class="metric-name">SKY QUALITY</span><strong id="detail-sqm">—</strong><small>mag / arcsec² · SQM</small></div><div class="metric-card"><span class="metric-name">BORTLE CLASS</span><strong id="detail-bortle">—</strong><small id="detail-bortle-description">Light pollution scale</small></div></div></section>
+        <section class="metric-section window-section"><div class="section-heading"><span>02</span><h2>Best observation window</h2><i></i></div><div class="window-card"><div class="window-time"><div><span>START · LOCAL TIME</span><strong id="detail-start">—</strong></div><div class="window-arrow">→</div><div><span>END · LOCAL TIME</span><strong id="detail-end">—</strong></div></div><div class="window-stats"><div><span>MEAN CLOUD COVER</span><strong id="detail-cloud">—</strong></div><div><span>SUN ALTITUDE</span><strong id="detail-sun">—</strong></div><div><span>MOON ALTITUDE</span><strong id="detail-moon">—</strong></div><div><span>LUNAR ILLUMINATION</span><strong id="detail-illumination">—</strong></div></div><div class="detail-extra-grid"><div><span>OBSERVATION CATEGORY</span><strong id="detail-category">—</strong></div><div><span>DISTANCE FROM SEARCH CENTER</span><strong id="detail-distance">—</strong></div></div></div></section>
+        <p class="data-disclaimer" id="detail-data-disclaimer"></p>
+      </aside>
+      <div class="detail-map-column">
+        <div class="detail-map-heading"><div><div class="step-label">03 / YOUR DESTINATION</div><h2>Find your vantage point</h2></div><span class="coordinates" id="detail-coordinates">42.03° N · 87.75° W</span></div>
+        <div class="detail-map-frame"><div id="detail-map" class="map-canvas" aria-label="Map centered on the selected observing location"></div><div class="selected-map-tag"><span class="tag-pin">⌖</span><span><strong id="map-selected-name">Skokie Lagoons</strong><small>Selected observing site</small></span></div></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="footer-brand">✦ <span>STARGAZING PLANNER</span></div><div class="footer-credits"><span>DATA &amp; ATTRIBUTION</span><a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Cloud forecasts · Open-Meteo (CC BY 4.0)</a><a href="https://open-meteo.com/en/docs/geocoding-api" target="_blank" rel="noreferrer">City geocoding · Open-Meteo / GeoNames</a><a href="https://geocoding.geo.census.gov/geocoder/" target="_blank" rel="noreferrer">U.S. addresses · Census Geocoder</a><a href="https://darkskysites.com/" target="_blank" rel="noreferrer">SQM &amp; Bortle · DarkSkySites</a><a href="https://docs.overturemaps.org/attribution/#places" target="_blank" rel="noreferrer">Observatories · Overture Maps</a><a href="https://github.com/cosinekitty/astronomy" target="_blank" rel="noreferrer">Sun &amp; Moon · Astronomy Engine</a></div><div class="footer-year">© 2026</div></footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
